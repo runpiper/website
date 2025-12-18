@@ -121,7 +121,7 @@ footer {
 /* Navigation (mobile) */
 nav ul {
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: var(--spacing-xs);
 }
 
 /* Mobile navigation - hamburger menu for mobile devices */
@@ -130,7 +130,7 @@ nav ul {
     .nav-toggle {
         display: flex;
     }
-    
+
     /* Keep navigation horizontal with hamburger on the right */
     .navigation {
         flex-direction: row;
@@ -138,7 +138,7 @@ nav ul {
         align-items: center;
         position: relative;
     }
-    
+
     /* Hide nav links by default on mobile, show as dropdown */
     .nav-links {
         display: none;
@@ -157,25 +157,25 @@ nav ul {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 99;
     }
-    
+
     /* Show dropdown when open */
     .nav-links.open {
         display: flex;
     }
-    
+
     /* Style links in dropdown */
     .nav-links li {
         width: 100%;
         margin: 0;
     }
-    
+
     .nav-links a {
         display: block;
         padding: 0.75rem 1.5rem;
         width: 100%;
         transition: background 0.2s ease, color 0.2s ease;
     }
-    
+
     .nav-links a:hover {
         background: rgba(0, 123, 255, 0.08);
     }
@@ -186,7 +186,7 @@ nav ul {
     .nav-toggle {
         display: none;
     }
-    
+
     .nav-links {
         display: flex !important;
         position: static;
@@ -198,7 +198,7 @@ nav ul {
         min-width: 0;
         box-shadow: none;
     }
-    
+
     .nav-links a {
         padding: 0;
     }
@@ -281,7 +281,7 @@ nav ul {
     /* Navigation */
     nav ul {
         flex-direction: row;
-        gap: var(--spacing-xl);
+        gap: var(--spacing-xs);
     }
 }
 
@@ -361,7 +361,7 @@ nav ul {
 
     /* Navigation */
     nav ul {
-        gap: var(--spacing-2xl);
+        gap: var(--spacing-xs);
     }
 }
 
@@ -441,7 +441,7 @@ nav ul {
 
     /* Navigation */
     nav ul {
-        gap: var(--spacing-2xl);
+        gap: var(--spacing-xs);
     }
 }
 

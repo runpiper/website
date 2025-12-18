@@ -42,7 +42,7 @@
 
 /* Navigation sections */
 .nav-section {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .nav-section-title {
@@ -231,4 +231,3 @@
         padding: 0.5rem 0;
     }
 }
-
