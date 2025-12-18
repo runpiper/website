@@ -56,17 +56,24 @@ async fn main() {
 }
 
 async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let app = Router::new().route("/", get(home));
-
+    // Log environment info for debugging
     let port = std::env::var("PORT")
         .ok()
         .and_then(|p| p.parse().ok())
         .unwrap_or(3000);
+    
+    println!("Environment check:");
+    println!("  PORT: {}", port);
+    println!("  PWD: {:?}", std::env::current_dir());
+    
+    let app = Router::new().route("/", get(home));
     let addr = format!("0.0.0.0:{}", port);
     
     println!("Starting server on {}", addr);
     let listener = tokio::net::TcpListener::bind(&addr).await?;
-    println!("Listening on http://{}", addr);
+    println!("Server bound successfully, listening on http://{}", addr);
+    println!("Ready to accept connections");
+    
     axum::serve(listener, app).await?;
     Ok(())
 }

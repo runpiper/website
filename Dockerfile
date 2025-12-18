@@ -33,9 +33,6 @@ WORKDIR /app
 # Copy the binary from builder
 COPY --from=builder /app/target/release/website /app/website
 
-# Copy templates directory (needed by Askama at runtime)
-COPY --from=builder /app/templates ./templates
-
 # Make binary executable
 RUN chmod +x /app/website
 
@@ -43,5 +40,5 @@ RUN chmod +x /app/website
 EXPOSE 3000
 
 # Run the application
-CMD ["./website"]
+ENTRYPOINT ["/app/website"]
 

@@ -1,12 +1,9 @@
 services:
-  - type: web
-    name: website
-    runtime: docker
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
-    plan: free
-    envVars:
-      - key: PORT
-        value: 3000
-    healthCheckPath: /
-
+    - type: web
+      name: website
+      runtime: docker
+      dockerfilePath: ./Dockerfile
+      dockerContext: .
+      plan: free
+      # PORT is automatically set by Render, no need to override
+      healthCheckPath: /
