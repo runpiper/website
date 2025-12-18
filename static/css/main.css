@@ -16,7 +16,9 @@ header {
     margin-right: auto;
     position: sticky;
     top: 0;
-    background: #fcf5e5;
+    background: rgba(252, 245, 229, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 100;
 }
 
