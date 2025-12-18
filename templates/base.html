@@ -118,8 +118,16 @@
         <header role="banner">
             {% block header %}
             <div class="container">
-                <nav role="navigation" aria-label="Main navigation">
+                <nav
+                    class="navigation"
+                    role="navigation"
+                    aria-label="Main navigation"
+                >
                     <a href="/" class="site-name">runpiper</a>
+                    <p class="site-definition">
+                        <em>noun</em> · agent runtime for building long-running
+                        agents
+                    </p>
                 </nav>
             </div>
             {% endblock %}
