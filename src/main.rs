@@ -48,6 +48,15 @@ async fn home() -> HomeTemplate {
 
 #[tokio::main]
 async fn main() {
+    // Immediate output to verify binary is running
+    println!("Application starting...");
+    eprintln!("Application starting (stderr)...");
+    
+    // Flush output immediately
+    use std::io::Write;
+    std::io::stdout().flush().ok();
+    std::io::stderr().flush().ok();
+    
     // Better error handling
     if let Err(e) = run().await {
         eprintln!("Error starting server: {}", e);

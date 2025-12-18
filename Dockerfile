@@ -26,6 +26,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     libc6 \
+    libgcc-s1 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -33,12 +34,15 @@ WORKDIR /app
 # Copy the binary from builder
 COPY --from=builder /app/target/release/website /app/website
 
-# Make binary executable
-RUN chmod +x /app/website
+# Make binary executable and check dependencies
+RUN chmod +x /app/website && \
+    ls -la /app/website && \
+    file /app/website && \
+    ldd /app/website || echo "Binary is statically linked or ldd not available"
 
 # Expose port
 EXPOSE 3000
 
-# Run the application
-ENTRYPOINT ["/app/website"]
+# Run the application directly
+CMD ["/app/website"]
 
