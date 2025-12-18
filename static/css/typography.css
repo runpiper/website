@@ -14,7 +14,7 @@ h4,
 h5,
 h6 {
     font-family: "IBM Plex Serif", Georgia, serif;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 1.2;
     margin-top: 0;
     margin-bottom: 1rem;
@@ -30,28 +30,28 @@ h1 {
 }
 
 h2 {
-    font-weight: 600;
+    font-weight: 400;
     /* Responsive font sizes defined in responsive.css */
 }
 
 h3 {
-    font-weight: 600;
+    font-weight: 400;
     /* Responsive font sizes defined in responsive.css */
 }
 
 h4 {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 h5 {
     font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 h6 {
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
