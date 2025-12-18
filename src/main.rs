@@ -56,16 +56,25 @@ async fn health() -> Json<HealthResponse> {
     Json(HealthResponse { status: "ok" })
 }
 
-#[tokio::main]
-async fn main() {
+// Non-async main that runs before tokio
+fn main() {
     // Write to file immediately to prove binary is running
     let _ = std::fs::write("/tmp/rust-main-started.txt", "main() called\n");
     
     // Immediate output with explicit flushing
     use std::io::Write;
     eprintln!("RUST_APP: ========================================");
-    eprintln!("RUST_APP: Starting main function...");
+    eprintln!("RUST_APP: Starting main function (sync)...");
     eprintln!("RUST_APP: ========================================");
+    std::io::stderr().flush().ok();
+    
+    // Now start the async runtime
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    rt.block_on(async_main());
+}
+
+async fn async_main() {
+    eprintln!("RUST_APP: In async_main()");
     std::io::stderr().flush().ok();
     
     // Set up panic hook to capture panics
