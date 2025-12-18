@@ -1,5 +1,10 @@
 use askama::Template;
-use axum::{routing::get, Router, Json};
+use axum::{
+    routing::get,
+    Router,
+    Json,
+    extract::Path,
+};
 use serde::Serialize;
 use std::io::Write;
 use tower_http::{
@@ -12,6 +17,9 @@ use axum::http::{header, HeaderValue};
 
 mod seo;
 use seo::SeoMeta;
+
+mod markdown;
+use markdown::{get_blog_post, get_doc_page, MarkdownError};
 
 #[derive(Template)]
 #[template(path = "home.html")]
@@ -62,6 +70,120 @@ struct HealthResponse {
 
 async fn health() -> Json<HealthResponse> {
     Json(HealthResponse { status: "ok" })
+}
+
+// Blog template
+#[derive(Template)]
+#[template(path = "blog.html")]
+struct BlogTemplate {
+    // SEO fields
+    site_name: &'static str,
+    page_title: String,
+    meta_description: String,
+    meta_keywords: &'static str,
+    canonical_url: String,
+    base_url: &'static str,
+    og_image: String,
+    current_year: u16,
+    
+    // Blog content
+    title: String,
+    date: Option<String>,
+    author: Option<String>,
+    tags: Option<Vec<String>>,
+    content: String,
+}
+
+impl BlogTemplate {
+    fn new(slug: &str, title: String, description: Option<String>, date: Option<String>, author: Option<String>, tags: Option<Vec<String>>, content: String) -> Self {
+        let seo = SeoMeta::default();
+        let meta_desc = description.unwrap_or_else(|| format!("{} - {}", title, seo.site_name));
+        
+        Self {
+            site_name: seo.site_name,
+            page_title: title.clone(),
+            meta_description: meta_desc,
+            meta_keywords: "blog, AI agents, runpiper",
+            canonical_url: format!("{}/blog/{}", seo.base_url, slug),
+            base_url: seo.base_url,
+            og_image: format!("{}/og-image.png", seo.base_url),
+            current_year: seo.current_year,
+            title,
+            date,
+            author,
+            tags,
+            content,
+        }
+    }
+}
+
+// Docs template
+#[derive(Template)]
+#[template(path = "docs.html")]
+struct DocsTemplate {
+    // SEO fields
+    site_name: &'static str,
+    page_title: String,
+    meta_description: String,
+    meta_keywords: &'static str,
+    canonical_url: String,
+    base_url: &'static str,
+    og_image: String,
+    current_year: u16,
+    
+    // Docs content
+    title: String,
+    description: Option<String>,
+    content: String,
+}
+
+impl DocsTemplate {
+    fn new(folder: &str, slug: &str, title: String, description: Option<String>, content: String) -> Self {
+        let seo = SeoMeta::default();
+        let meta_desc = description.clone().unwrap_or_else(|| format!("{} - Documentation", title));
+        
+        Self {
+            site_name: seo.site_name,
+            page_title: title.clone(),
+            meta_description: meta_desc,
+            meta_keywords: "documentation, AI agents, runpiper",
+            canonical_url: format!("{}/docs/{}/{}", seo.base_url, folder, slug),
+            base_url: seo.base_url,
+            og_image: format!("{}/og-image.png", seo.base_url),
+            current_year: seo.current_year,
+            title,
+            description,
+            content,
+        }
+    }
+}
+
+// Blog handler
+async fn blog_post(Path(slug): Path<String>) -> Result<BlogTemplate, MarkdownError> {
+    let md = get_blog_post(&slug)?;
+    
+    Ok(BlogTemplate::new(
+        &slug,
+        md.frontmatter.title,
+        md.frontmatter.description,
+        md.frontmatter.date,
+        md.frontmatter.author,
+        md.frontmatter.tags,
+        md.html,
+    ))
+}
+
+// Docs handler
+async fn docs_page(Path((folder, slug)): Path<(String, String)>) -> Result<DocsTemplate, MarkdownError> {
+    let md = get_doc_page(&folder, &slug)?;
+    
+    Ok(DocsTemplate::new(
+        &folder,
+        &slug,
+        md.frontmatter.title,
+        md.frontmatter.description,
+        md.html,
+    ))
 }
 
 // Non-async main that runs before tokio
@@ -141,6 +263,8 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let app = Router::new()
         .route("/", get(home))
         .route("/health", get(health))
+        .route("/blog/:slug", get(blog_post))
+        .route("/docs/:folder/:slug", get(docs_page))
         // Serve static files with aggressive caching
         .nest_service("/static", ServeDir::new("static"))
         .layer(middleware);

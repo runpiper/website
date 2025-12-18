@@ -1,0 +1,277 @@
+/* Content pages styling for docs and blog */
+
+.content-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Blog post styling */
+.blog-post {
+    margin-bottom: 4rem;
+}
+
+.post-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    width: 100%;
+    position: relative;
+}
+
+/* Extended horizontal border for post header */
+.post-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 1px;
+    border-top: 1px dashed #e5dcc8;
+}
+
+.post-header h1 {
+    margin-bottom: 0.75rem;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.post-date {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 0.9rem;
+}
+
+.post-author {
+    margin: 0.5rem 0;
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 0.9rem;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.tag {
+    padding: 0.25rem 0.75rem;
+    background: var(--color-accent-light, #f3f4f6);
+    color: var(--color-accent, #4f46e5);
+    border-radius: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Doc page styling */
+.doc-page {
+    margin-bottom: 4rem;
+}
+
+.doc-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed #e5dcc8;
+    width: 100%;
+    position: relative;
+}
+
+/* Extended horizontal border for doc header */
+.doc-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 1px;
+    border-top: 1px dashed #e5dcc8;
+}
+
+.doc-header h1 {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.doc-description {
+    font-size: 1.15rem;
+    color: var(--color-text-secondary, #6b7280);
+    line-height: 1.6;
+}
+
+/* Shared content styling */
+.post-content,
+.doc-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.post-content h2,
+.doc-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.post-content h3,
+.doc-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.post-content h4,
+.doc-content h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.post-content p,
+.doc-content p {
+    margin-bottom: 1.25rem;
+}
+
+.post-content ul,
+.post-content ol,
+.doc-content ul,
+.doc-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 2rem;
+}
+
+.post-content li,
+.doc-content li {
+    margin-bottom: 0.5rem;
+}
+
+.post-content pre,
+.doc-content pre {
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.post-content code,
+.doc-content code {
+    padding: 0.2rem 0.4rem;
+    background: #f1f5f9;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.post-content pre code,
+.doc-content pre code {
+    padding: 0;
+    background: transparent;
+    color: inherit;
+}
+
+.post-content blockquote,
+.doc-content blockquote {
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid var(--color-accent, #4f46e5);
+    background: var(--color-accent-light, #f3f4f6);
+    font-style: italic;
+}
+
+.post-content a,
+.doc-content a {
+    color: var(--color-accent, #4f46e5);
+    text-decoration: underline;
+}
+
+.post-content a:hover,
+.doc-content a:hover {
+    text-decoration: none;
+}
+
+.post-content table,
+.doc-content table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.post-content th,
+.post-content td,
+.doc-content th,
+.doc-content td {
+    padding: 0.75rem;
+    border: 1px solid var(--color-border, #e5e7eb);
+    text-align: left;
+}
+
+.post-content th,
+.doc-content th {
+    background: var(--color-accent-light, #f3f4f6);
+    font-weight: 600;
+}
+
+.post-content img,
+.doc-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+    border-radius: 0.5rem;
+}
+
+.post-content hr,
+.doc-content hr {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+/* Task lists */
+.post-content ul.contains-task-list,
+.doc-content ul.contains-task-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.post-content input[type="checkbox"],
+.doc-content input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .content-page {
+        margin: 1rem auto;
+    }
+
+    .post-header h1,
+    .doc-header h1 {
+        font-size: 2rem;
+    }
+
+    .post-content,
+    .doc-content {
+        font-size: 1rem;
+    }
+
+    .post-content h2,
+    .doc-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .post-content h3,
+    .doc-content h3 {
+        font-size: 1.25rem;
+    }
+}

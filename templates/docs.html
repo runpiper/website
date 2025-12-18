@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/content.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container content-page">
+    <article class="doc-page">
+        <div class="doc-header">
+            <h1>{{ title }}</h1>
+            {% match description %}
+            {% when Some with (desc) %}
+            <p class="doc-description">{{ desc }}</p>
+            {% when None %}
+            {% endmatch %}
+        </div>
+        
+        <div class="doc-content">
+            {{ content|safe }}
+        </div>
+    </article>
+</div>
+{% endblock %}
+
