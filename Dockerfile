@@ -41,7 +41,6 @@ RUN chmod +x /app/website && \
 
 # Create a startup script that captures all output
 RUN echo '#!/bin/sh\n\
-set -e\n\
 export RUST_BACKTRACE=full\n\
 export RUST_LOG=debug\n\
 echo "=== Startup Script Starting ==="\n\
@@ -51,12 +50,23 @@ echo "Binary exists: $(test -f /app/website && echo yes || echo no)"\n\
 echo "Binary executable: $(test -x /app/website && echo yes || echo no)"\n\
 echo "PORT env var: ${PORT:-not set}"\n\
 echo "=== Starting Application ==="\n\
-exec /app/website\n\
+/app/website 2>&1\n\
+EXIT_CODE=$?\n\
+echo "=== Application Exited ==="\n\
+echo "Exit code: $EXIT_CODE"\n\
+if [ -f /tmp/rust-main-started.txt ]; then\n\
+    echo "Main function was called - file exists:"\n\
+    cat /tmp/rust-main-started.txt\n\
+else\n\
+    echo "Main function was NOT called - file missing"\n\
+fi\n\
+exit $EXIT_CODE\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
 # Expose port
 EXPOSE 3000
 
 # Run via wrapper script to see all output
-CMD ["/app/start.sh"]
+# Using shell form to ensure proper output handling
+CMD ["/bin/sh", "-c", "/app/start.sh"]
 

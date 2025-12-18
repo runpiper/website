@@ -20,8 +20,8 @@ impl Default for SeoMeta {
         };
 
         Self {
-            site_name: "My Website",
-            base_url: "https://example.com",
+            site_name: "Runpiper",
+            base_url: "https://runpiper.ai",
             current_year,
         }
     }

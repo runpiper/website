@@ -58,11 +58,14 @@ async fn health() -> Json<HealthResponse> {
 
 #[tokio::main]
 async fn main() {
+    // Write to file immediately to prove binary is running
+    let _ = std::fs::write("/tmp/rust-main-started.txt", "main() called\n");
+    
     // Immediate output with explicit flushing
     use std::io::Write;
-    print!("RUST_APP: Starting main function...\n");
-    eprint!("RUST_APP: Starting main function (stderr)...\n");
-    std::io::stdout().flush().ok();
+    eprintln!("RUST_APP: ========================================");
+    eprintln!("RUST_APP: Starting main function...");
+    eprintln!("RUST_APP: ========================================");
     std::io::stderr().flush().ok();
     
     // Set up panic hook to capture panics
