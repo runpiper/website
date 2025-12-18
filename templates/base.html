@@ -107,8 +107,8 @@
         <link rel="stylesheet" href="/static/css/base.css" />
         <link rel="stylesheet" href="/static/css/fonts.css" />
         <link rel="stylesheet" href="/static/css/typography.css" />
-        <link rel="stylesheet" href="/static/css/responsive.css" />
         <link rel="stylesheet" href="/static/css/main.css" />
+        <link rel="stylesheet" href="/static/css/responsive.css" />
 
         {% block head %}{% endblock %}
     </head>
@@ -123,11 +123,24 @@
                     role="navigation"
                     aria-label="Main navigation"
                 >
-                    <a href="/" class="site-name">runpiper</a>
-                    <p class="site-definition">
-                        <em>noun</em> · open source enterprise-grade agent
-                        runtime built in rust
-                    </p>
+                    <div class="nav-brand">
+                        <a href="/" class="site-name">runpiper</a>
+                        <p class="site-definition">
+                            <em>noun</em> · open source enterprise-grade agent
+                            runtime built in rust
+                        </p>
+                    </div>
+                    
+                    <!-- Hamburger button for mobile -->
+                    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                        <span class="hamburger-icon"></span>
+                    </button>
+                    
+                    <!-- Navigation links -->
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="/docs">Docs</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                    </ul>
                 </nav>
             </div>
             {% endblock %}
@@ -146,5 +159,39 @@
         </footer>
 
         {% block scripts %}{% endblock %}
+        
+        <!-- Mobile navigation toggle script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const navToggle = document.getElementById('navToggle');
+                const navLinks = document.getElementById('navLinks');
+                
+                if (navToggle && navLinks) {
+                    navToggle.addEventListener('click', function() {
+                        const isOpen = navLinks.classList.toggle('open');
+                        navToggle.classList.toggle('open');
+                        navToggle.setAttribute('aria-expanded', isOpen);
+                    });
+                    
+                    // Close menu when clicking outside
+                    document.addEventListener('click', function(event) {
+                        if (!event.target.closest('.navigation')) {
+                            navLinks.classList.remove('open');
+                            navToggle.classList.remove('open');
+                            navToggle.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    
+                    // Close menu when clicking a link
+                    navLinks.querySelectorAll('a').forEach(function(link) {
+                        link.addEventListener('click', function() {
+                            navLinks.classList.remove('open');
+                            navToggle.classList.remove('open');
+                            navToggle.setAttribute('aria-expanded', 'false');
+                        });
+                    });
+                }
+            });
+        </script>
     </body>
 </html>

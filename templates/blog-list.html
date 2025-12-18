@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/blog-list.css" />
+{% endblock %}
+
+{% block structured_data %}
+{
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "{{ site_name }} Blog",
+    "description": "{{ meta_description }}",
+    "url": "{{ canonical_url }}",
+    "publisher": {
+        "@type": "Organization",
+        "name": "{{ site_name }}",
+        "url": "{{ base_url }}"
+    }
+    {% if !posts.is_empty() %}
+    ,
+    "blogPost": [
+        {% for post in posts %}
+        {
+            "@type": "BlogPosting",
+            "headline": "{{ post.title }}",
+            "url": "{{ base_url }}/blog/{{ post.slug }}"
+            {% match post.description %}
+            {% when Some with (desc) %}
+            ,
+            "description": "{{ desc }}"
+            {% when None %}
+            {% endmatch %}
+            {% match post.date %}
+            {% when Some with (d) %}
+            ,
+            "datePublished": "{{ d }}"
+            {% when None %}
+            {% endmatch %}
+            {% match post.author %}
+            {% when Some with (a) %}
+            ,
+            "author": {
+                "@type": "Person",
+                "name": "{{ a }}"
+            }
+            {% when None %}
+            {% endmatch %}
+        }{% if !loop.last %},{% endif %}
+        {% endfor %}
+    ]
+    {% endif %}
+}
+{% endblock %}
+
+{% block content %}
+<div class="container blog-list-page">
+    <div class="page-header">
+        <h1>Blog</h1>
+        <p class="page-description">
+            Insights, updates, and best practices for building production-grade AI agents with RunPiper
+        </p>
+    </div>
+
+    {% if posts.is_empty() %}
+    <div class="no-posts">
+        <p>No blog posts yet. Check back soon!</p>
+    </div>
+    {% else %}
+    <div class="posts-grid">
+        {% for post in posts %}
+        <article class="post-card">
+            <a href="/blog/{{ post.slug }}" class="post-card-link">
+                <div class="post-card-content">
+                    <h2>{{ post.title }}</h2>
+                    
+                    <div class="post-meta">
+                        {% match post.date %}
+                        {% when Some with (d) %}
+                        <time datetime="{{ d }}" class="post-date">{{ d }}</time>
+                        {% when None %}
+                        {% endmatch %}
+                        
+                        {% match post.author %}
+                        {% when Some with (a) %}
+                        <span class="post-author">{{ a }}</span>
+                        {% when None %}
+                        {% endmatch %}
+                    </div>
+                    
+                    {% match post.description %}
+                    {% when Some with (desc) %}
+                    <p class="post-excerpt">{{ desc }}</p>
+                    {% when None %}
+                    {% endmatch %}
+                    
+                    {% match post.tags %}
+                    {% when Some with (t) %}
+                    <div class="post-tags">
+                        {% for tag in t %}
+                        <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% when None %}
+                    {% endmatch %}
+                </div>
+            </a>
+        </article>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

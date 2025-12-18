@@ -2,24 +2,127 @@
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/content.css" />
+<link rel="stylesheet" href="/static/css/docs-nav.css" />
 {% endblock %}
 
 {% block content %}
-<div class="container content-page">
-    <article class="doc-page">
-        <div class="doc-header">
-            <h1>{{ title }}</h1>
-            {% match description %}
-            {% when Some with (desc) %}
-            <p class="doc-description">{{ desc }}</p>
-            {% when None %}
-            {% endmatch %}
-        </div>
-        
-        <div class="doc-content">
-            {{ content|safe }}
-        </div>
-    </article>
+<div class="docs-layout">
+    <!-- Mobile dropdown navigation -->
+    <div class="docs-nav-mobile">
+        <button class="docs-nav-toggle" id="docsNavToggle" aria-label="Toggle documentation navigation">
+            <span class="nav-toggle-text">Navigation</span>
+            <span class="nav-toggle-icon">▼</span>
+        </button>
+        <nav class="docs-nav-dropdown" id="docsNavDropdown">
+            {% for folder in docs_nav %}
+            {% if folder.name != "_root" %}
+            <div class="nav-section">
+                <h3 class="nav-section-title">{{ folder.display_name }}</h3>
+                <ul class="nav-section-pages">
+                    {% for page in folder.pages %}
+                    <li>
+                        {% if page.is_index %}
+                        <a href="/docs/{{ folder.name }}" {% if current_folder == folder.name && current_slug == "index" %}class="active"{% endif %}>
+                            {{ page.title }}
+                        </a>
+                        {% else %}
+                        <a href="/docs/{{ folder.name }}/{{ page.slug }}" {% if current_folder == folder.name && current_slug == page.slug %}class="active"{% endif %}>
+                            {{ page.title }}
+                        </a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+            {% for page in folder.pages %}
+            {% if page.slug == "index" %}
+            <div class="nav-section">
+                <a href="/docs" class="nav-root-link {% if current_slug == "docs" %}active{% endif %}">{{ page.title }}</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </nav>
+    </div>
+
+    <!-- Desktop sidebar navigation -->
+    <aside class="docs-sidebar">
+        <nav class="docs-nav">
+            {% for folder in docs_nav %}
+            {% if folder.name != "_root" %}
+            <div class="nav-section">
+                <h3 class="nav-section-title">{{ folder.display_name }}</h3>
+                <ul class="nav-section-pages">
+                    {% for page in folder.pages %}
+                    <li>
+                        {% if page.is_index %}
+                        <a href="/docs/{{ folder.name }}" {% if current_folder == folder.name && current_slug == "index" %}class="active"{% endif %}>
+                            {{ page.title }}
+                        </a>
+                        {% else %}
+                        <a href="/docs/{{ folder.name }}/{{ page.slug }}" {% if current_folder == folder.name && current_slug == page.slug %}class="active"{% endif %}>
+                            {{ page.title }}
+                        </a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+            {% for page in folder.pages %}
+            {% if page.slug == "index" %}
+            <div class="nav-section">
+                <a href="/docs" class="nav-root-link {% if current_slug == "docs" %}active{% endif %}">{{ page.title }}</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="docs-main">
+        <article class="doc-page">
+            <div class="doc-header">
+                <h1>{{ title }}</h1>
+                {% match description %}
+                {% when Some with (desc) %}
+                <p class="doc-description">{{ desc }}</p>
+                {% when None %}
+                {% endmatch %}
+            </div>
+            
+            <div class="doc-content">
+                {{ content|safe }}
+            </div>
+        </article>
+    </div>
 </div>
+
+<script>
+// Mobile navigation toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('docsNavToggle');
+    const dropdown = document.getElementById('docsNavDropdown');
+    
+    if (toggle && dropdown) {
+        toggle.addEventListener('click', function() {
+            dropdown.classList.toggle('open');
+            toggle.classList.toggle('open');
+        });
+        
+        // Close dropdown when clicking a link
+        dropdown.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                dropdown.classList.remove('open');
+                toggle.classList.remove('open');
+            });
+        });
+    }
+});
+</script>
 {% endblock %}
 

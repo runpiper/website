@@ -19,7 +19,7 @@ mod seo;
 use seo::SeoMeta;
 
 mod markdown;
-use markdown::{get_blog_post, get_doc_page, MarkdownError};
+use markdown::{get_blog_post, get_doc_page, get_doc_index, list_blog_posts, list_all_docs, BlogPostSummary, DocFolder, MarkdownError};
 
 #[derive(Template)]
 #[template(path = "home.html")]
@@ -135,25 +135,41 @@ struct DocsTemplate {
     title: String,
     description: Option<String>,
     content: String,
+    
+    // Navigation
+    docs_nav: Vec<DocFolder>,
+    current_folder: String,
+    current_slug: String,
 }
 
 impl DocsTemplate {
-    fn new(folder: &str, slug: &str, title: String, description: Option<String>, content: String) -> Self {
+    fn new(folder: &str, slug: &str, title: String, description: Option<String>, content: String, docs_nav: Vec<DocFolder>) -> Self {
         let seo = SeoMeta::default();
         let meta_desc = description.clone().unwrap_or_else(|| format!("{} - Documentation", title));
+        
+        let canonical_url = if folder.is_empty() {
+            format!("{}/docs", seo.base_url)
+        } else if slug == "index" {
+            format!("{}/docs/{}", seo.base_url, folder)
+        } else {
+            format!("{}/docs/{}/{}", seo.base_url, folder, slug)
+        };
         
         Self {
             site_name: seo.site_name,
             page_title: title.clone(),
             meta_description: meta_desc,
             meta_keywords: "documentation, AI agents, runpiper",
-            canonical_url: format!("{}/docs/{}/{}", seo.base_url, folder, slug),
+            canonical_url,
             base_url: seo.base_url,
             og_image: format!("{}/og-image.png", seo.base_url),
             current_year: seo.current_year,
             title,
             description,
             content,
+            docs_nav,
+            current_folder: folder.to_string(),
+            current_slug: slug.to_string(),
         }
     }
 }
@@ -176,6 +192,7 @@ async fn blog_post(Path(slug): Path<String>) -> Result<BlogTemplate, MarkdownErr
 // Docs handler
 async fn docs_page(Path((folder, slug)): Path<(String, String)>) -> Result<DocsTemplate, MarkdownError> {
     let md = get_doc_page(&folder, &slug)?;
+    let docs_nav = list_all_docs()?;
     
     Ok(DocsTemplate::new(
         &folder,
@@ -183,7 +200,80 @@ async fn docs_page(Path((folder, slug)): Path<(String, String)>) -> Result<DocsT
         md.frontmatter.title,
         md.frontmatter.description,
         md.html,
+        docs_nav,
     ))
+}
+
+// Docs folder index handler (e.g., /docs/getting-started)
+async fn docs_folder_index(Path(folder): Path<String>) -> Result<DocsTemplate, MarkdownError> {
+    let md = get_doc_index(Some(&folder))?;
+    let docs_nav = list_all_docs()?;
+    
+    Ok(DocsTemplate::new(
+        &folder,
+        "index",
+        md.frontmatter.title,
+        md.frontmatter.description,
+        md.html,
+        docs_nav,
+    ))
+}
+
+// Docs root index handler (e.g., /docs)
+async fn docs_root_index() -> Result<DocsTemplate, MarkdownError> {
+    let md = get_doc_index(None)?;
+    let docs_nav = list_all_docs()?;
+    
+    Ok(DocsTemplate::new(
+        "",
+        "docs",
+        md.frontmatter.title,
+        md.frontmatter.description,
+        md.html,
+        docs_nav,
+    ))
+}
+
+// Blog list template
+#[derive(Template)]
+#[template(path = "blog-list.html")]
+struct BlogListTemplate {
+    // SEO fields
+    site_name: &'static str,
+    page_title: &'static str,
+    meta_description: &'static str,
+    meta_keywords: &'static str,
+    canonical_url: String,
+    base_url: &'static str,
+    og_image: String,
+    current_year: u16,
+    
+    // Blog list content
+    posts: Vec<BlogPostSummary>,
+}
+
+impl BlogListTemplate {
+    fn new(posts: Vec<BlogPostSummary>) -> Self {
+        let seo = SeoMeta::default();
+        
+        Self {
+            site_name: seo.site_name,
+            page_title: "Blog",
+            meta_description: "Insights, updates, and best practices for building production-grade AI agents with RunPiper. Learn about Rust, performance optimization, and agent deployment strategies.",
+            meta_keywords: "AI agents blog, Rust blog, agent runtime, performance, best practices, tutorials",
+            canonical_url: format!("{}/blog", seo.base_url),
+            base_url: seo.base_url,
+            og_image: format!("{}/og-image.png", seo.base_url),
+            current_year: seo.current_year,
+            posts,
+        }
+    }
+}
+
+// Blog list handler
+async fn blog_list() -> Result<BlogListTemplate, MarkdownError> {
+    let posts = list_blog_posts()?;
+    Ok(BlogListTemplate::new(posts))
 }
 
 // Non-async main that runs before tokio
@@ -263,7 +353,10 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let app = Router::new()
         .route("/", get(home))
         .route("/health", get(health))
+        .route("/blog", get(blog_list))
         .route("/blog/:slug", get(blog_post))
+        .route("/docs", get(docs_root_index))
+        .route("/docs/:folder", get(docs_folder_index))
         .route("/docs/:folder/:slug", get(docs_page))
         // Serve static files with aggressive caching
         .nest_service("/static", ServeDir::new("static"))

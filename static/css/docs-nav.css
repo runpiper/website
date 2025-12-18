@@ -1,0 +1,234 @@
+/* Documentation navigation styles */
+
+.docs-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    position: relative;
+}
+
+/* Full-height vertical separator */
+.docs-layout::before {
+    content: "";
+    position: absolute;
+    left: calc(220px + 1.5rem);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-left: 1px dashed #e5dcc8;
+}
+
+/* Sidebar navigation - Desktop */
+.docs-sidebar {
+    position: sticky;
+    top: 5rem;
+    height: fit-content;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    padding-right: 1.5rem;
+}
+
+.docs-nav {
+    padding-right: 0;
+}
+
+/* Mobile navigation */
+.docs-nav-mobile {
+    display: none;
+}
+
+/* Navigation sections */
+.nav-section {
+    margin-bottom: 1.5rem;
+}
+
+.nav-section-title {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.nav-root-link {
+    display: block;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: 0.35rem 0;
+    transition: color 0.2s ease;
+}
+
+.nav-root-link:hover {
+    color: #007bff;
+}
+
+.nav-root-link.active {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.nav-section-pages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-section-pages li {
+    margin: 0;
+}
+
+.nav-section-pages a {
+    display: block;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.9rem;
+    color: #4a4a4a;
+    text-decoration: none;
+    padding: 0.35rem 0;
+    transition: color 0.2s ease;
+    line-height: 1.4;
+}
+
+.nav-section-pages a:hover {
+    color: #007bff;
+}
+
+.nav-section-pages a.active {
+    color: #007bff;
+    font-weight: 600;
+}
+
+/* Main content area */
+.docs-main {
+    min-width: 0;
+    max-width: 900px;
+}
+
+.doc-page {
+    margin-bottom: 4rem;
+}
+
+/* Scrollbar styling for sidebar */
+.docs-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.docs-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.docs-sidebar::-webkit-scrollbar-thumb {
+    background: #e5dcc8;
+    border-radius: 2px;
+}
+
+.docs-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #d4c8ad;
+}
+
+/* Mobile styles */
+@media (max-width: 1024px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    /* Hide vertical separator on mobile */
+    .docs-layout::before {
+        display: none;
+    }
+
+    .docs-sidebar {
+        display: none;
+    }
+
+    .docs-nav-mobile {
+        display: block;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .docs-nav-toggle {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: #fff;
+        border: 1px dashed #e5dcc8;
+        border-radius: 4px;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+    }
+
+    .docs-nav-toggle:hover {
+        border-color: #d4c8ad;
+    }
+
+    .docs-nav-toggle.open .nav-toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    .nav-toggle-icon {
+        font-size: 0.75rem;
+        transition: transform 0.2s ease;
+    }
+
+    .docs-nav-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin-top: 0.5rem;
+        background: #fff;
+        border: 1px dashed #e5dcc8;
+        border-radius: 4px;
+        padding: 1rem;
+        max-height: 70vh;
+        overflow-y: auto;
+        z-index: 50;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .docs-nav-dropdown.open {
+        display: block;
+    }
+
+    .docs-nav-dropdown .nav-section {
+        margin-bottom: 1.25rem;
+    }
+
+    .docs-nav-dropdown .nav-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .docs-main {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .docs-layout {
+        padding: 0.5rem;
+    }
+
+    .nav-section-pages a {
+        padding: 0.5rem 0;
+    }
+}
+

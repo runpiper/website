@@ -72,6 +72,10 @@ The markdown parser (`pulldown-cmark`) supports:
   
 - Documentation: `/docs/{folder}/{slug}`
   - Example: `content/docs/getting-started/quickstart.md` → `/docs/getting-started/quickstart`
+  
+- Documentation indexes: `/docs` or `/docs/{folder}`
+  - Example: `content/docs/index.md` → `/docs`
+  - Example: `content/docs/getting-started/index.md` → `/docs/getting-started`
 
 ## Adding New Content
 
@@ -89,6 +93,15 @@ The markdown parser (`pulldown-cmark`) supports:
 3. Add the required frontmatter (title, description)
 4. Write your content
 5. The page will be available at `/docs/{folder}/{filename-without-md}`
+
+### Add a Documentation Index Page
+
+You can create index pages for documentation sections:
+
+1. **Root index**: Create `content/docs/index.md` → Available at `/docs`
+2. **Folder index**: Create `content/docs/{folder}/index.md` → Available at `/docs/{folder}`
+
+These work great for overview/landing pages for documentation sections.
 
 ## Security
 

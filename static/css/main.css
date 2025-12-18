@@ -36,6 +36,14 @@ header::after {
 
 .navigation {
     padding: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-brand {
+    flex: 0 0 auto;
 }
 
 .site-name {
@@ -47,6 +55,7 @@ header::after {
     border: none;
     display: inline-block;
     padding-bottom: 0.75rem;
+    transition: opacity 0.2s ease;
 }
 
 .site-name:hover {
@@ -66,6 +75,84 @@ header::after {
 .site-definition em {
     font-style: italic;
     color: #888;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    text-decoration: none;
+    border: none;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+    opacity: 1;
+}
+
+/* Hamburger menu button - hidden by default (desktop) */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101;
+}
+
+.hamburger-icon {
+    position: relative;
+    width: 24px;
+    height: 2px;
+    background: #1a1a1a;
+    transition: background 0.3s ease;
+}
+
+.hamburger-icon::before,
+.hamburger-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: #1a1a1a;
+    transition: transform 0.3s ease;
+}
+
+.hamburger-icon::before {
+    top: -8px;
+}
+
+.hamburger-icon::after {
+    top: 8px;
+}
+
+/* Hamburger animation when open */
+.nav-toggle.open .hamburger-icon {
+    background: transparent;
+}
+
+.nav-toggle.open .hamburger-icon::before {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.nav-toggle.open .hamburger-icon::after {
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 nav ul {
