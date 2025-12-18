@@ -6,4 +6,4 @@ services:
       dockerContext: .
       plan: free
       # PORT is automatically set by Render, no need to override
-      healthCheckPath: /
+      healthCheckPath: /health

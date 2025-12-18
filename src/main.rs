@@ -58,58 +58,65 @@ async fn health() -> Json<HealthResponse> {
 
 #[tokio::main]
 async fn main() {
-    // Write to file immediately to verify code is running
-    let _ = std::fs::write("/tmp/rust-app-started.txt", "Application started\n");
-    
-    // Set up panic hook to capture panics
-    std::panic::set_hook(Box::new(|panic_info| {
-        let _ = std::fs::write("/tmp/rust-panic.txt", format!("PANIC: {:?}", panic_info));
-        eprintln!("PANIC occurred!");
-        eprintln!("Location: {:?}", panic_info.location());
-        if let Some(s) = panic_info.payload().downcast_ref::<&str>() {
-            eprintln!("Message: {}", s);
-        }
-        if let Some(s) = panic_info.payload().downcast_ref::<String>() {
-            eprintln!("Message: {}", s);
-        }
-    }));
-    
-    // Immediate output to verify binary is running
-    println!("Application starting...");
-    eprintln!("Application starting (stderr)...");
-    
-    // Flush output immediately
+    // Immediate output with explicit flushing
     use std::io::Write;
+    print!("RUST_APP: Starting main function...\n");
+    eprint!("RUST_APP: Starting main function (stderr)...\n");
     std::io::stdout().flush().ok();
     std::io::stderr().flush().ok();
     
+    // Set up panic hook to capture panics
+    std::panic::set_hook(Box::new(|panic_info| {
+        eprintln!("RUST_APP: PANIC occurred!");
+        eprintln!("RUST_APP: Location: {:?}", panic_info.location());
+        if let Some(s) = panic_info.payload().downcast_ref::<&str>() {
+            eprintln!("RUST_APP: Message: {}", s);
+        }
+        if let Some(s) = panic_info.payload().downcast_ref::<String>() {
+            eprintln!("RUST_APP: Message: {}", s);
+        }
+        std::io::stderr().flush().ok();
+    }));
+    
+    print!("RUST_APP: About to call run()...\n");
+    std::io::stdout().flush().ok();
+    
     // Better error handling
     if let Err(e) = run().await {
-        eprintln!("Error starting server: {}", e);
+        eprintln!("RUST_APP: Error starting server: {}", e);
+        std::io::stderr().flush().ok();
         std::process::exit(1);
     }
 }
 
 async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    // Log environment info for debugging
+    use std::io::Write;
+    
+    eprintln!("RUST_APP: In run() function");
+    std::io::stderr().flush().ok();
+    
     let port = std::env::var("PORT")
         .ok()
         .and_then(|p| p.parse().ok())
         .unwrap_or(3000);
     
-    println!("Environment check:");
-    println!("  PORT: {}", port);
-    println!("  PWD: {:?}", std::env::current_dir());
+    eprintln!("RUST_APP: PORT = {}", port);
+    std::io::stderr().flush().ok();
     
     let app = Router::new()
         .route("/", get(home))
         .route("/health", get(health));
     let addr = format!("0.0.0.0:{}", port);
     
-    println!("Starting server on {}", addr);
+    eprintln!("RUST_APP: Starting server on {}", addr);
+    std::io::stderr().flush().ok();
+    
     let listener = tokio::net::TcpListener::bind(&addr).await?;
-    println!("Server bound successfully, listening on http://{}", addr);
-    println!("Ready to accept connections");
+    eprintln!("RUST_APP: Server bound successfully, listening on http://{}", addr);
+    std::io::stderr().flush().ok();
+    
+    eprintln!("RUST_APP: About to start serving...");
+    std::io::stderr().flush().ok();
     
     axum::serve(listener, app).await?;
     Ok(())
