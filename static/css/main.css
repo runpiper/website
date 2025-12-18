@@ -27,8 +27,9 @@ header::after {
     content: "";
     position: absolute;
     bottom: 0;
-    left: -100vw;
-    right: -100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
     height: 1px;
     border-top: 1px dashed #e5dcc8;
 }
@@ -198,8 +199,9 @@ footer::before {
     content: "";
     position: absolute;
     top: 0;
-    left: -100vw;
-    right: -100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
     height: 1px;
     border-top: 1px dashed #e5dcc8;
 }
