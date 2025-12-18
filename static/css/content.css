@@ -177,12 +177,14 @@
 .post-content a,
 .doc-content a {
     color: var(--color-accent, #4f46e5);
-    text-decoration: underline;
+    text-decoration: none;
+    border-bottom: none;
 }
 
 .post-content a:hover,
 .doc-content a:hover {
     text-decoration: none;
+    border-bottom: none;
 }
 
 .post-content table,

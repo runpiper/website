@@ -24,15 +24,14 @@
 /* Sidebar navigation - Desktop */
 .docs-sidebar {
     position: sticky;
-    top: 5rem;
+    top: 8rem;
     height: fit-content;
-    max-height: calc(100vh - 6rem);
-    overflow-y: auto;
     padding-right: 1.5rem;
 }
 
 .docs-nav {
-    padding-right: 0;
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
 }
 
 /* Mobile navigation */
@@ -43,6 +42,10 @@
 /* Navigation sections */
 .nav-section {
     margin-bottom: 0.5rem;
+}
+
+.nav-section:last-child {
+    margin-bottom: 0;
 }
 
 .nav-section-title {
@@ -118,20 +121,20 @@
 }
 
 /* Scrollbar styling for sidebar */
-.docs-sidebar::-webkit-scrollbar {
+.docs-nav::-webkit-scrollbar {
     width: 4px;
 }
 
-.docs-sidebar::-webkit-scrollbar-track {
+.docs-nav::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.docs-sidebar::-webkit-scrollbar-thumb {
+.docs-nav::-webkit-scrollbar-thumb {
     background: #e5dcc8;
     border-radius: 2px;
 }
 
-.docs-sidebar::-webkit-scrollbar-thumb:hover {
+.docs-nav::-webkit-scrollbar-thumb:hover {
     background: #d4c8ad;
 }
 
