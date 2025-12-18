@@ -1,5 +1,6 @@
 use askama::Template;
-use axum::{routing::get, Router};
+use axum::{routing::get, Router, Json};
+use serde::Serialize;
 
 mod seo;
 use seo::SeoMeta;
@@ -46,8 +47,33 @@ async fn home() -> HomeTemplate {
     HomeTemplate::new(SeoMeta::default())
 }
 
+#[derive(Serialize)]
+struct HealthResponse {
+    status: &'static str,
+}
+
+async fn health() -> Json<HealthResponse> {
+    Json(HealthResponse { status: "ok" })
+}
+
 #[tokio::main]
 async fn main() {
+    // Write to file immediately to verify code is running
+    let _ = std::fs::write("/tmp/rust-app-started.txt", "Application started\n");
+    
+    // Set up panic hook to capture panics
+    std::panic::set_hook(Box::new(|panic_info| {
+        let _ = std::fs::write("/tmp/rust-panic.txt", format!("PANIC: {:?}", panic_info));
+        eprintln!("PANIC occurred!");
+        eprintln!("Location: {:?}", panic_info.location());
+        if let Some(s) = panic_info.payload().downcast_ref::<&str>() {
+            eprintln!("Message: {}", s);
+        }
+        if let Some(s) = panic_info.payload().downcast_ref::<String>() {
+            eprintln!("Message: {}", s);
+        }
+    }));
+    
     // Immediate output to verify binary is running
     println!("Application starting...");
     eprintln!("Application starting (stderr)...");
@@ -75,7 +101,9 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("  PORT: {}", port);
     println!("  PWD: {:?}", std::env::current_dir());
     
-    let app = Router::new().route("/", get(home));
+    let app = Router::new()
+        .route("/", get(home))
+        .route("/health", get(health));
     let addr = format!("0.0.0.0:{}", port);
     
     println!("Starting server on {}", addr);

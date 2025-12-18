@@ -37,12 +37,26 @@ COPY --from=builder /app/target/release/website /app/website
 # Make binary executable and check dependencies
 RUN chmod +x /app/website && \
     ls -la /app/website && \
-    file /app/website && \
-    ldd /app/website || echo "Binary is statically linked or ldd not available"
+    ldd /app/website 2>/dev/null || echo "Binary appears to be statically linked"
+
+# Create a startup script that captures all output
+RUN echo '#!/bin/sh\n\
+set -e\n\
+export RUST_BACKTRACE=full\n\
+export RUST_LOG=debug\n\
+echo "=== Startup Script Starting ==="\n\
+echo "Working directory: $(pwd)"\n\
+echo "Binary location: /app/website"\n\
+echo "Binary exists: $(test -f /app/website && echo yes || echo no)"\n\
+echo "Binary executable: $(test -x /app/website && echo yes || echo no)"\n\
+echo "PORT env var: ${PORT:-not set}"\n\
+echo "=== Starting Application ==="\n\
+exec /app/website\n\
+' > /app/start.sh && chmod +x /app/start.sh
 
 # Expose port
 EXPOSE 3000
 
-# Run the application directly
-CMD ["/app/website"]
+# Run via wrapper script to see all output
+CMD ["/app/start.sh"]
 
