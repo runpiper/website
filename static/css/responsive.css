@@ -115,7 +115,6 @@ footer {
 /* Grid adjustments (mobile) */
 .card-grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
 }
 
 /* Navigation (mobile) */
@@ -280,7 +279,6 @@ nav ul {
     /* Grid */
     .card-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: var(--spacing-xl);
     }
 
     /* Navigation */
@@ -361,7 +359,6 @@ nav ul {
     /* Grid */
     .card-grid {
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: var(--spacing-xl);
     }
 
     /* Navigation */
@@ -441,7 +438,6 @@ nav ul {
     /* Grid */
     .card-grid {
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: var(--spacing-2xl);
     }
 
     /* Navigation */

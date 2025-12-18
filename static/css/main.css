@@ -207,7 +207,7 @@ nav a:hover {
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 1rem;
     margin-top: 1rem;
 }
 
@@ -215,7 +215,7 @@ nav a:hover {
     background: white;
     border: 1px dashed #e5dcc8;
     border-radius: 8px;
-    padding: 2rem;
+    padding: var(--spacing-md);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
