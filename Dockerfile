@@ -42,6 +42,9 @@ COPY --from=builder /app/target/release/website /app/website
 # Copy static assets
 COPY static /app/static
 
+# Copy content (markdown files)
+COPY content /app/content
+
 # Make binary executable and check dependencies
 RUN chmod +x /app/website && \
     ls -la /app/website && \
