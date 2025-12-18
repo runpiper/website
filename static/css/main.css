@@ -14,7 +14,10 @@ header {
     border-right: 1px dashed #e5dcc8;
     margin-left: auto;
     margin-right: auto;
-    position: relative;
+    position: sticky;
+    top: 0;
+    background: #fcf5e5;
+    z-index: 100;
 }
 
 /* Extended horizontal border for header */
