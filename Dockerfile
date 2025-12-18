@@ -39,6 +39,9 @@ WORKDIR /app
 # Copy the binary from builder
 COPY --from=builder /app/target/release/website /app/website
 
+# Copy static assets
+COPY static /app/static
+
 # Make binary executable and check dependencies
 RUN chmod +x /app/website && \
     ls -la /app/website && \

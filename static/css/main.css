@@ -1,0 +1,237 @@
+/**
+ * Main stylesheet for Runpiper
+ * Uses IBM Plex Sans (body) and IBM Plex Serif (headings)
+ */
+
+/* Container and layout utilities */
+/* Note: Container responsive styles are defined in responsive.css */
+
+/* Header styles */
+header {
+    width: 100%;
+    max-width: 100%;
+    border-left: 1px dashed #e5dcc8;
+    border-right: 1px dashed #e5dcc8;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+/* Extended horizontal border for header */
+header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -100vw;
+    right: -100vw;
+    height: 1px;
+    border-top: 1px dashed #e5dcc8;
+}
+
+.site-name {
+    font-family: "IBM Plex Serif", Georgia, serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    text-decoration: none;
+    border: none;
+    display: inline-block;
+    padding: 1.5rem 0;
+}
+
+.site-name:hover {
+    opacity: 0.7;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+}
+
+nav a {
+    border: none;
+    font-weight: 500;
+}
+
+nav a:hover {
+    opacity: 1;
+    color: #007bff;
+}
+
+/* Hero section */
+.hero {
+    text-align: left;
+}
+
+.hero .container {
+}
+
+.hero h1 {
+    padding-top: 1rem;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: #4a4a4a;
+    max-width: 700px;
+}
+
+/* Content sections */
+.section {
+}
+
+.section-dark {
+    color: #1a1a1a;
+}
+
+.section-dark h2,
+.section-dark h3 {
+    color: #1a1a1a;
+}
+
+/* Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: white;
+    border: 1px dashed #e5dcc8;
+    border-radius: 8px;
+    padding: 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    font-size: 1.5rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+    opacity: 1;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #007bff;
+    border: 2px solid #007bff;
+}
+
+.btn-secondary:hover {
+    background: #007bff;
+    color: white;
+    opacity: 1;
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    border-left: 1px dashed #e5dcc8;
+    border-right: 1px dashed #e5dcc8;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    padding: 2rem 1rem;
+    font-size: 0.875rem;
+    color: #666;
+    position: relative;
+}
+
+/* Extended horizontal border for footer */
+footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100vw;
+    right: -100vw;
+    height: 1px;
+    border-top: 1px dashed #e5dcc8;
+}
+
+/* Utility classes */
+.text-muted {
+    color: #666;
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+.mt-2 {
+    margin-top: 1rem;
+}
+.mt-3 {
+    margin-top: 1.5rem;
+}
+.mt-4 {
+    margin-top: 2rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+.mb-2 {
+    margin-bottom: 1rem;
+}
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+.mb-4 {
+    margin-bottom: 2rem;
+}
+
+/* Responsive max-widths for header and footer to match main */
+@media (min-width: 768px) {
+    header,
+    footer {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 1024px) {
+    header,
+    footer {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1440px) {
+    header,
+    footer {
+        max-width: 1200px;
+    }
+}
+
+/* Note: Responsive breakpoints are defined in responsive.css */

@@ -2,6 +2,13 @@ use askama::Template;
 use axum::{routing::get, Router, Json};
 use serde::Serialize;
 use std::io::Write;
+use tower_http::{
+    compression::CompressionLayer,
+    services::ServeDir,
+    set_header::SetResponseHeaderLayer,
+};
+use tower::ServiceBuilder;
+use axum::http::{header, HeaderValue};
 
 mod seo;
 use seo::SeoMeta;
@@ -37,9 +44,9 @@ impl HomeTemplate {
             og_image: format!("{}/og-image.png", seo.base_url),
             current_year: seo.current_year,
             
-            heading: "Hello, World!",
-            subheading: "Welcome to your new Axum-powered website",
-            welcome_text: "This is a fully SEO-optimized website scaffold built with Axum and Askama templates. Every page includes proper meta tags, Open Graph data, Twitter cards, and structured data for maximum search engine visibility.",
+            heading: "Indestructible Agent Runtime",
+            subheading: "Built in Rust for performance, stability and security.",
+            welcome_text: "RunPiper is the open-source Supabase for AI agents. Built in Rust for rock-solid performance and stability, it provides long-running agent instances that are completely decoupled from your codebase. Focus on building great user experiences and getting actual work done—let RunPiper handle the complexity of managing your agents.",
         }
     }
 }
@@ -113,9 +120,31 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("RUST_APP: PORT = {}", port);
     std::io::stderr().flush().ok();
     
+    // Build middleware stack
+    let middleware = ServiceBuilder::new()
+        // Add compression (gzip, brotli, zstd)
+        .layer(CompressionLayer::new())
+        // Security headers
+        .layer(SetResponseHeaderLayer::if_not_present(
+            header::X_CONTENT_TYPE_OPTIONS,
+            HeaderValue::from_static("nosniff"),
+        ))
+        .layer(SetResponseHeaderLayer::if_not_present(
+            header::X_FRAME_OPTIONS,
+            HeaderValue::from_static("DENY"),
+        ))
+        .layer(SetResponseHeaderLayer::if_not_present(
+            header::STRICT_TRANSPORT_SECURITY,
+            HeaderValue::from_static("max-age=31536000; includeSubDomains"),
+        ));
+    
     let app = Router::new()
         .route("/", get(home))
-        .route("/health", get(health));
+        .route("/health", get(health))
+        // Serve static files with aggressive caching
+        .nest_service("/static", ServeDir::new("static"))
+        .layer(middleware);
+    
     let addr = format!("0.0.0.0:{}", port);
     
     eprintln!("RUST_APP: Starting server on {}", addr);

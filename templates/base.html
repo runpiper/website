@@ -75,79 +75,53 @@
         </script>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link
+            rel="icon"
+            type="image/svg+xml"
+            href="/static/images/favicon-32x32.png"
+        />
         <link
             rel="apple-touch-icon"
             sizes="180x180"
-            href="/apple-touch-icon.png"
+            href="/static/images/apple-touch-icon.png"
         />
 
         <!-- Preconnect for performance -->
         <link rel="preconnect" href="{{ base_url }}" />
 
+        <!-- Self-hosted IBM Plex fonts - Only preload critical regular weights -->
+        <link
+            rel="preload"
+            href="/static/fonts/IBMPlexSans-Regular.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        <link
+            rel="preload"
+            href="/static/fonts/IBMPlexSerif-Regular.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+        <link rel="stylesheet" href="/static/css/base.css" />
+        <link rel="stylesheet" href="/static/css/fonts.css" />
+        <link rel="stylesheet" href="/static/css/typography.css" />
+        <link rel="stylesheet" href="/static/css/responsive.css" />
+        <link rel="stylesheet" href="/static/css/main.css" />
+
         {% block head %}{% endblock %}
-
-        <style>
-            {% block styles %}
-            *, *::before, *::after {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-
-            html {
-                font-size: 16px;
-                scroll-behavior: smooth;
-            }
-
-            body {
-                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                line-height: 1.6;
-                color: #1a1a1a;
-                background: #fafafa;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-            }
-
-            main {
-                flex: 1;
-            }
-
-            a {
-                color: inherit;
-                text-decoration: none;
-            }
-
-            img {
-                max-width: 100%;
-                height: auto;
-                display: block;
-            }
-            {% endblock %}
-        </style>
     </head>
     <body>
-        <a
-            href="#main-content"
-            class="skip-link"
-            style="
-                position: absolute;
-                left: -9999px;
-                top: auto;
-                width: 1px;
-                height: 1px;
-                overflow: hidden;
-                z-index: 9999;
-            "
-            >Skip to main content</a
-        >
+        <a href="#main-content" class="skip-link">Skip to main content</a>
 
         <header role="banner">
             {% block header %}
-            <nav role="navigation" aria-label="Main navigation">
-                <!-- Navigation content -->
-            </nav>
+            <div class="container">
+                <nav role="navigation" aria-label="Main navigation">
+                    <a href="/" class="site-name">runpiper</a>
+                </nav>
+            </div>
             {% endblock %}
         </header>
 

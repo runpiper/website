@@ -1,0 +1,48 @@
+/**
+ * Home page specific styles
+ * Layout and responsive behavior handled by responsive.css
+ */
+
+/* Hero section - Visual styling only */
+.hero {
+    text-align: left;
+}
+
+.hero h1 {
+    color: #1a1a1a;
+}
+
+.hero p {
+}
+
+/* Features section - Visual styling only */
+.features {
+}
+
+.features h2 {
+    text-align: left;
+}
+
+/* Feature card visual enhancements */
+.feature-card {
+    /* Base card styles from main.css */
+    /* Additional home-specific styling can go here */
+}
+
+.feature-card h3 {
+    color: #1a1a1a;
+}
+
+.feature-card p {
+    color: #4a4a4a;
+}
+
+/* Welcome section */
+.section-title {
+    text-align: left;
+}
+
+.welcome-text {
+    text-align: left;
+    color: #4a4a4a;
+}

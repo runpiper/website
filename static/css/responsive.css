@@ -1,0 +1,574 @@
+/**
+ * Responsive Breakpoint System
+ * 
+ * Breakpoints:
+ * - Phone (Mobile):     < 768px
+ * - Tablet:             768px - 1023px  
+ * - Desktop (Regular):  1024px - 1439px
+ * - Desktop (Large):    1440px+
+ * 
+ * Mobile-first approach: Base styles are for mobile,
+ * then progressively enhanced for larger screens.
+ */
+
+/* ==========================================================================
+   ROOT VARIABLES
+   ========================================================================== */
+
+:root {
+    /* Breakpoint values */
+    --breakpoint-phone: 767px;
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 1024px;
+    --breakpoint-desktop-lg: 1440px;
+
+    /* Container max-widths */
+    --container-phone: 100%;
+    --container-tablet: 720px;
+    --container-desktop: 960px;
+    --container-desktop-lg: 1200px;
+
+    /* Spacing scale (adjusts per breakpoint) */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+}
+
+/* ==========================================================================
+   BASE (MOBILE FIRST) - Phone < 768px
+   ========================================================================== */
+
+/* Container base styles */
+.container {
+    width: 100%;
+    max-width: var(--container-phone);
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+.container-narrow {
+    width: 100%;
+    max-width: var(--container-phone);
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+/* Remove margin from first and last children */
+.container > *:first-child,
+.container-narrow > *:first-child {
+    margin-top: 0;
+}
+
+.container > *:last-child,
+.container-narrow > *:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive typography base (mobile) */
+html {
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 28px;
+    line-height: 32px;
+}
+
+h2 {
+    font-size: 24px;
+    line-height: 28px;
+}
+
+h3 {
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.lead {
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+/* Responsive spacing (mobile) */
+.section {
+    padding: 0;
+}
+
+.hero {
+    padding: 0;
+}
+
+header {
+    padding: 0;
+}
+
+footer {
+    padding: 0;
+}
+
+/* Grid adjustments (mobile) */
+.card-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+}
+
+/* Navigation (mobile) */
+nav ul {
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* ==========================================================================
+   TABLET - 768px to 1023px
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    :root {
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 3rem;
+        --spacing-2xl: 4rem;
+        --spacing-3xl: 5rem;
+    }
+
+    /* Container */
+    .container {
+        max-width: var(--container-tablet);
+        padding: var(--spacing-xs) var(--spacing-md);
+    }
+
+    .container-narrow {
+        max-width: 640px;
+        padding: var(--spacing-xs) var(--spacing-md);
+    }
+
+    /* Typography */
+    html {
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 32px;
+        line-height: 36px;
+    }
+
+    h2 {
+        font-size: 28px;
+        line-height: 32px;
+    }
+
+    h3 {
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        line-height: 1.6;
+    }
+
+    /* Spacing */
+    .section {
+        padding: 0;
+    }
+
+    .hero {
+        padding: 0;
+    }
+
+    header {
+        padding: 0;
+    }
+
+    footer {
+        padding: 0;
+    }
+
+    /* Grid */
+    .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--spacing-xl);
+    }
+
+    /* Navigation */
+    nav ul {
+        flex-direction: row;
+        gap: var(--spacing-xl);
+    }
+}
+
+/* ==========================================================================
+   DESKTOP (REGULAR) - 1024px to 1439px
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+    :root {
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 3rem;
+        --spacing-2xl: 5rem;
+        --spacing-3xl: 6rem;
+    }
+
+    /* Container */
+    .container {
+        max-width: var(--container-desktop);
+        padding: var(--spacing-sm) var(--spacing-lg);
+    }
+
+    .container-narrow {
+        max-width: 720px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    /* Typography */
+    html {
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 36px;
+        line-height: 40px;
+    }
+
+    h2 {
+        font-size: 32px;
+        line-height: 36px;
+    }
+
+    h3 {
+        font-size: 28px;
+        line-height: 32px;
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        line-height: 1.6;
+    }
+
+    /* Spacing */
+    .section {
+        padding: 0;
+    }
+
+    .hero {
+        padding: 0;
+    }
+
+    header {
+        padding: 0;
+    }
+
+    footer {
+        padding: 0;
+    }
+
+    /* Grid */
+    .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: var(--spacing-xl);
+    }
+
+    /* Navigation */
+    nav ul {
+        gap: var(--spacing-2xl);
+    }
+}
+
+/* ==========================================================================
+   DESKTOP (LARGE) - 1440px and above
+   ========================================================================== */
+
+@media (min-width: 1440px) {
+    :root {
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 2.5rem;
+        --spacing-xl: 4rem;
+        --spacing-2xl: 6rem;
+        --spacing-3xl: 8rem;
+    }
+
+    /* Container */
+    .container {
+        max-width: var(--container-desktop-lg);
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .container-narrow {
+        max-width: 800px;
+        padding: var(--spacing-sm) var(--spacing-sm);
+    }
+
+    /* Typography */
+    html {
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 48px;
+        line-height: 52px;
+    }
+
+    h2 {
+        font-size: 36px;
+        line-height: 40px;
+    }
+
+    h3 {
+        font-size: 28px;
+        line-height: 32px;
+    }
+
+    .lead {
+        font-size: 1.375rem;
+        line-height: 1.6;
+    }
+
+    /* Spacing */
+    .section {
+        padding: 0;
+    }
+
+    .hero {
+        padding: 0;
+    }
+
+    header {
+        padding: 0;
+    }
+
+    footer {
+        padding: 0;
+    }
+
+    /* Grid */
+    .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--spacing-2xl);
+    }
+
+    /* Navigation */
+    nav ul {
+        gap: var(--spacing-2xl);
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE UTILITY CLASSES
+   ========================================================================== */
+
+/* Display utilities */
+.hide-phone {
+    display: none;
+}
+
+.hide-tablet {
+    display: initial;
+}
+
+.hide-desktop {
+    display: initial;
+}
+
+.hide-desktop-lg {
+    display: initial;
+}
+
+@media (min-width: 768px) {
+    .hide-phone {
+        display: initial;
+    }
+
+    .hide-tablet {
+        display: none;
+    }
+
+    .show-phone-only {
+        display: none;
+    }
+}
+
+@media (min-width: 1024px) {
+    .hide-tablet {
+        display: initial;
+    }
+
+    .hide-desktop {
+        display: none;
+    }
+
+    .show-tablet-only {
+        display: none;
+    }
+}
+
+@media (min-width: 1440px) {
+    .hide-desktop {
+        display: initial;
+    }
+
+    .hide-desktop-lg {
+        display: none;
+    }
+
+    .show-desktop-only {
+        display: none;
+    }
+}
+
+/* Text alignment responsive utilities */
+@media (max-width: 767px) {
+    .text-center-phone {
+        text-align: center;
+    }
+
+    .text-left-phone {
+        text-align: left;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .text-center-tablet {
+        text-align: center;
+    }
+
+    .text-left-tablet {
+        text-align: left;
+    }
+}
+
+@media (min-width: 1024px) {
+    .text-center-desktop {
+        text-align: center;
+    }
+
+    .text-left-desktop {
+        text-align: left;
+    }
+}
+
+/* Responsive spacing utilities */
+.p-responsive {
+    padding: var(--spacing-md);
+}
+
+.px-responsive {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+
+.py-responsive {
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+}
+
+.m-responsive {
+    margin: var(--spacing-md);
+}
+
+.mx-responsive {
+    margin-left: var(--spacing-md);
+    margin-right: var(--spacing-md);
+}
+
+.my-responsive {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Flexible grid system */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: calc(var(--spacing-md) * -1);
+    margin-right: calc(var(--spacing-md) * -1);
+}
+
+.col {
+    flex: 1;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+
+/* Column breakpoints */
+@media (max-width: 767px) {
+    .col-phone-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .col-phone-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-tablet-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .col-tablet-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .col-tablet-4 {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+
+    .col-tablet-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .col-desktop-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .col-desktop-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .col-desktop-4 {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+
+    .col-desktop-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+/* Responsive images */
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Container queries support (modern browsers) */
+@supports (container-type: inline-size) {
+    .container-query {
+        container-type: inline-size;
+    }
+}
