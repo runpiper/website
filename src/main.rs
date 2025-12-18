@@ -121,13 +121,41 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("RUST_APP: Starting server on {}", addr);
     std::io::stderr().flush().ok();
     
-    let listener = tokio::net::TcpListener::bind(&addr).await?;
+    eprintln!("RUST_APP: Attempting to bind to {}", addr);
+    std::io::stderr().flush().ok();
+    
+    let listener = match tokio::net::TcpListener::bind(&addr).await {
+        Ok(l) => {
+            eprintln!("RUST_APP: Successfully bound to {}", addr);
+            std::io::stderr().flush().ok();
+            l
+        }
+        Err(e) => {
+            eprintln!("RUST_APP: ERROR binding to {}: {}", addr, e);
+            std::io::stderr().flush().ok();
+            return Err(Box::new(e));
+        }
+    };
+    
     eprintln!("RUST_APP: Server bound successfully, listening on http://{}", addr);
     std::io::stderr().flush().ok();
     
     eprintln!("RUST_APP: About to start serving...");
     std::io::stderr().flush().ok();
     
-    axum::serve(listener, app).await?;
-    Ok(())
+    eprintln!("RUST_APP: Calling axum::serve()...");
+    std::io::stderr().flush().ok();
+    
+    match axum::serve(listener, app).await {
+        Ok(_) => {
+            eprintln!("RUST_APP: axum::serve() returned successfully");
+            std::io::stderr().flush().ok();
+            Ok(())
+        }
+        Err(e) => {
+            eprintln!("RUST_APP: ERROR in axum::serve(): {}", e);
+            std::io::stderr().flush().ok();
+            Err(Box::new(e))
+        }
+    }
 }
