@@ -1,6 +1,7 @@
 use askama::Template;
 use axum::{routing::get, Router, Json};
 use serde::Serialize;
+use std::io::Write;
 
 mod seo;
 use seo::SeoMeta;
@@ -62,7 +63,6 @@ fn main() {
     let _ = std::fs::write("/tmp/rust-main-started.txt", "main() called\n");
     
     // Immediate output with explicit flushing
-    use std::io::Write;
     eprintln!("RUST_APP: ========================================");
     eprintln!("RUST_APP: Starting main function (sync)...");
     eprintln!("RUST_APP: ========================================");
@@ -102,8 +102,6 @@ async fn async_main() {
 }
 
 async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    use std::io::Write;
-    
     eprintln!("RUST_APP: In run() function");
     std::io::stderr().flush().ok();
     
