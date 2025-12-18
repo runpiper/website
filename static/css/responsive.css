@@ -109,7 +109,7 @@ header {
 }
 
 footer {
-    padding: 0;
+    padding: 1.5rem var(--spacing-lg);
 }
 
 /* Grid adjustments (mobile) */
@@ -129,6 +129,11 @@ nav ul {
     /* Show hamburger button on mobile */
     .nav-toggle {
         display: flex;
+    }
+
+    /* Hide site definition subtitle on mobile to prevent pushing hamburger off screen */
+    .site-definition {
+        display: none;
     }
 
     /* Keep navigation horizontal with hamburger on the right */
@@ -269,7 +274,7 @@ nav ul {
     }
 
     footer {
-        padding: 0;
+        padding: 2rem var(--spacing-md);
     }
 
     /* Grid */
@@ -350,7 +355,7 @@ nav ul {
     }
 
     footer {
-        padding: 0;
+        padding: 2rem var(--spacing-lg);
     }
 
     /* Grid */
@@ -430,7 +435,7 @@ nav ul {
     }
 
     footer {
-        padding: 0;
+        padding: 2rem var(--spacing-md);
     }
 
     /* Grid */
