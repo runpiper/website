@@ -15,37 +15,84 @@ name=search_term_string" } } {% endblock %} {% block head %}
 
 <section class="section" aria-labelledby="welcome-title">
     <div class="container">
-        <h2 id="welcome-title" class="section-title">Ready to Build</h2>
+        <h2 id="welcome-title" class="section-title">Why RunPiper</h2>
         <p class="welcome-text">{{ welcome_text }}</p>
     </div>
 </section>
 
 <section class="section features" aria-labelledby="features-title">
     <div class="container">
-        <h2 id="features-title">Built for Performance</h2>
+        <h2 id="features-title">Built for Scale</h2>
         <div class="card-grid">
             <div class="card feature-card">
-                <h3>Lightning Fast</h3>
+                <h3>Rust-Powered Performance</h3>
                 <p>
-                    Compile-time templates with zero runtime overhead. Automatic
-                    compression with gzip, brotli, and zstd.
+                    Sub-millisecond cold starts. Memory-safe execution. Run 10x
+                    more agents per dollar compared to interpreted runtimes.
                 </p>
             </div>
             <div class="card feature-card">
-                <h3>SEO Optimized</h3>
+                <h3>Enterprise Security</h3>
                 <p>
-                    Complete meta tags, Open Graph, Twitter Cards, and
-                    Schema.org structured data out of the box.
+                    No garbage collection pauses. No memory leaks. Rust's
+                    compile-time guarantees eliminate entire classes of runtime
+                    vulnerabilities.
                 </p>
             </div>
             <div class="card feature-card">
-                <h3>Beautiful Typography</h3>
+                <h3>One-Click Deploy</h3>
                 <p>
-                    IBM Plex Serif for elegant headings and IBM Plex Sans for
-                    clean, readable body text.
+                    Deploy to RunPiper Cloud instantly or self-host on your
+                    infrastructure. Full control over your agent fleet, zero
+                    DevOps overhead.
                 </p>
             </div>
         </div>
+    </div>
+</section>
+
+<section class="section features" aria-labelledby="oss-title">
+    <div class="container">
+        <h2 id="oss-title">100% Open Source</h2>
+        <div class="card-grid">
+            <div class="card feature-card">
+                <h3>No Vendor Lock-in</h3>
+                <p>
+                    Self-host the full runtime on your own infrastructure. Your
+                    agents, your data, your control.
+                </p>
+            </div>
+            <div class="card feature-card">
+                <h3>Built-in Observability</h3>
+                <p>
+                    Real-time monitoring, traces, and logs across all agent
+                    executions. Debug failures without leaving your workflow.
+                </p>
+                <span class="badge badge-coming-soon">Coming soon</span>
+            </div>
+            <div class="card feature-card">
+                <h3>Simplify your frameworks</h3>
+                <p>
+                    Replace LangChain, CrewAI, AutoGen, and your own homebrewed
+                    stack. RunPiper simplifies your agent config and tooling
+                    requirements.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section vision" aria-labelledby="vision-title">
+    <div class="container">
+        <h2 id="vision-title">Built for Enterprises Shipping Agents</h2>
+        <p class="welcome-text">
+            The future belongs to specialized agents orchestrated together—not
+            monolithic AI copilots. We're building the infrastructure layer that
+            lets enterprises deploy, monitor, and scale fleets of purpose-built
+            agents. Managed queues, automatic retries, human-in-the-loop
+            approvals, and the reliability guarantees your production workloads
+            demand.
+        </p>
     </div>
 </section>
 

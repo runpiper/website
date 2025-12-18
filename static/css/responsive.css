@@ -62,7 +62,7 @@
 /* Remove margin from first and last children */
 .container > *:first-child,
 .container-narrow > *:first-child {
-    margin-top: 0;
+    margin-top: 0.5rem;
 }
 
 .container > *:last-child,

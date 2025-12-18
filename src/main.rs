@@ -37,16 +37,16 @@ impl HomeTemplate {
         Self {
             site_name: seo.site_name,
             page_title: "Home",
-            meta_description: "Welcome to our website. Discover our products and services.",
-            meta_keywords: "website, services, products",
+            meta_description: "RunPiper is an open-source, enterprise-grade AI agent runtime built in Rust. Deploy thousands of agents with one click—self-hosted or on RunPiper Cloud.",
+            meta_keywords: "AI agents, agent runtime, Rust, enterprise AI, open source, agent deployment, agent orchestration",
             canonical_url: seo.base_url.to_string(),
             base_url: seo.base_url,
             og_image: format!("{}/og-image.png", seo.base_url),
             current_year: seo.current_year,
             
-            heading: "Indestructible Agent Runtime",
-            subheading: "Built in Rust for performance, stability and security.",
-            welcome_text: "RunPiper is the open-source Supabase for AI agents. Built in Rust for rock-solid performance and stability, it provides long-running agent instances that are completely decoupled from your codebase. Focus on building great user experiences and getting actual work done—let RunPiper handle the complexity of managing your agents.",
+            heading: "The Runtime for Production AI Agents",
+            subheading: "Open-source. Built in Rust. One-click deploy to RunPiper Cloud or self-host.",
+            welcome_text: "Prototyping AI agents is easy—running them reliably at scale is not. RunPiper handles the hard parts: memory-safe execution, sub-millisecond cold starts, and rock-solid stability for thousands of concurrent agents. Build with any framework, deploy anywhere.",
         }
     }
 }

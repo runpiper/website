@@ -13,10 +13,12 @@
 }
 
 .hero p {
+    color: #4a4a4a;
 }
 
 /* Features section - Visual styling only */
 .features {
+    margin-top: 1rem;
 }
 
 .features h2 {
@@ -31,10 +33,30 @@
 
 .feature-card h3 {
     color: #1a1a1a;
+    margin-bottom: 0.75rem;
 }
 
 .feature-card p {
     color: #4a4a4a;
+    line-height: 1.6;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.badge-coming-soon {
+    background: #f5f0e6;
+    color: #8b7355;
+    border: 1px dashed #d4c4a8;
 }
 
 /* Welcome section */
@@ -45,4 +67,21 @@
 .welcome-text {
     text-align: left;
     color: #4a4a4a;
+    max-width: 720px;
+    line-height: 1.7;
+}
+
+/* Vision section */
+.vision {
+    margin-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+.vision h2 {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.vision .welcome-text {
+    font-size: 1.1rem;
 }
