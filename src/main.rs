@@ -50,7 +50,13 @@ async fn home() -> HomeTemplate {
 async fn main() {
     let app = Router::new().route("/", get(home));
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    println!("Listening on http://localhost:3000");
+    let port = std::env::var("PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(3000);
+    let addr = format!("0.0.0.0:{}", port);
+    
+    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    println!("Listening on http://{}", addr);
     axum::serve(listener, app).await.unwrap();
 }
