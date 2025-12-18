@@ -1,0 +1,13 @@
+{
+  "buildCommand": "cargo build --release",
+  "outputDirectory": "target/release",
+  "installCommand": "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/serverless"
+    }
+  ]
+}
+
