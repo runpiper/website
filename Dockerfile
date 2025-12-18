@@ -17,8 +17,13 @@ RUN rm src/main.rs
 COPY src ./src
 COPY templates ./templates
 
-# Build the actual application
-RUN cargo build --release
+# Force rebuild by touching source files and cleaning old artifacts
+RUN touch src/main.rs && \
+    rm -f target/release/website target/release/deps/website-* && \
+    cargo build --release && \
+    ls -lh target/release/website && \
+    echo "Verifying binary contains our code..." && \
+    strings target/release/website | grep -i "RUST_APP" | head -5 || echo "RUST_APP not found in binary - this is a problem!"
 
 # Runtime stage
 FROM debian:bookworm-slim
