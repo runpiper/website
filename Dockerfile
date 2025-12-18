@@ -25,12 +25,19 @@ FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y \
     ca-certificates \
+    libc6 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy the binary from builder
 COPY --from=builder /app/target/release/website /app/website
+
+# Copy templates directory (needed by Askama at runtime)
+COPY --from=builder /app/templates ./templates
+
+# Make binary executable
+RUN chmod +x /app/website
 
 # Expose port
 EXPOSE 3000

@@ -48,6 +48,14 @@ async fn home() -> HomeTemplate {
 
 #[tokio::main]
 async fn main() {
+    // Better error handling
+    if let Err(e) = run().await {
+        eprintln!("Error starting server: {}", e);
+        std::process::exit(1);
+    }
+}
+
+async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let app = Router::new().route("/", get(home));
 
     let port = std::env::var("PORT")
@@ -56,7 +64,9 @@ async fn main() {
         .unwrap_or(3000);
     let addr = format!("0.0.0.0:{}", port);
     
-    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    println!("Starting server on {}", addr);
+    let listener = tokio::net::TcpListener::bind(&addr).await?;
     println!("Listening on http://{}", addr);
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app).await?;
+    Ok(())
 }
