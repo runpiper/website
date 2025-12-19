@@ -1,5 +1,5 @@
 ---
-title: Documentation
+title: Introduction
 description: Complete documentation for RunPiper - the enterprise-grade AI agent runtime built in Rust
 ---
 

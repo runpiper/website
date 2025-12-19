@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+.error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.error-page h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
+.error-page h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #666;
+    font-weight: 400;
+}
+
+.error-page p {
+    font-size: 1rem;
+    color: #888;
+    margin-bottom: 2rem;
+    max-width: 600px;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .error-page h1 {
+        font-size: 3rem;
+    }
+    
+    .error-page h2 {
+        font-size: 1.25rem;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .error-actions .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="error-page">
+        <h1>404</h1>
+        <h2>Page Not Found</h2>
+        <p>The page you're looking for doesn't exist or has been moved.</p>
+        <div class="error-actions">
+            {% if can_go_back %}
+            <a href="javascript:history.back()" class="btn btn-primary">Go Back</a>
+            {% endif %}
+            <a href="/" class="btn {% if can_go_back %}btn-secondary{% else %}btn-primary{% endif %}">Go Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

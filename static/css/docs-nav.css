@@ -51,7 +51,7 @@
 .nav-section-title {
     font-family: "IBM Plex Sans", system-ui, sans-serif;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: #6b7280;
@@ -62,7 +62,7 @@
     display: block;
     font-family: "IBM Plex Sans", system-ui, sans-serif;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 400;
     color: #1a1a1a;
     text-decoration: none;
     padding: 0.35rem 0;
@@ -75,7 +75,7 @@
 
 .nav-root-link.active {
     color: #007bff;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .nav-section-pages {
@@ -107,7 +107,7 @@
 
 .nav-section-pages a.active {
     color: #007bff;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 /* Main content area */
@@ -172,7 +172,7 @@
         border-radius: 4px;
         font-family: "IBM Plex Sans", system-ui, sans-serif;
         font-size: 0.95rem;
-        font-weight: 500;
+        font-weight: 400;
         color: #1a1a1a;
         cursor: pointer;
         transition: border-color 0.2s ease;

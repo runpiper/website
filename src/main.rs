@@ -4,6 +4,9 @@ use axum::{
     Router,
     Json,
     extract::Path,
+    extract::Request,
+    response::{Response, IntoResponse},
+    http::{StatusCode, header, HeaderValue},
 };
 use serde::Serialize;
 use std::io::Write;
@@ -13,7 +16,6 @@ use tower_http::{
     set_header::SetResponseHeaderLayer,
 };
 use tower::ServiceBuilder;
-use axum::http::{header, HeaderValue};
 
 mod seo;
 use seo::SeoMeta;
@@ -276,6 +278,68 @@ async fn blog_list() -> Result<BlogListTemplate, MarkdownError> {
     Ok(BlogListTemplate::new(posts))
 }
 
+// 404 template
+#[derive(Template)]
+#[template(path = "404.html")]
+struct NotFoundTemplate {
+    // SEO fields
+    site_name: &'static str,
+    page_title: &'static str,
+    meta_description: &'static str,
+    meta_keywords: &'static str,
+    canonical_url: String,
+    base_url: &'static str,
+    og_image: String,
+    current_year: u16,
+    
+    // Page content
+    can_go_back: bool,
+}
+
+impl NotFoundTemplate {
+    fn new(can_go_back: bool) -> Self {
+        let seo = SeoMeta::default();
+        
+        Self {
+            site_name: seo.site_name,
+            page_title: "404 - Page Not Found",
+            meta_description: "The page you're looking for doesn't exist or has been moved.",
+            meta_keywords: "404, page not found",
+            canonical_url: format!("{}/404", seo.base_url),
+            base_url: seo.base_url,
+            og_image: format!("{}/og-image.png", seo.base_url),
+            current_year: seo.current_year,
+            can_go_back,
+        }
+    }
+}
+
+// 404 handler
+async fn not_found_handler(request: Request) -> Response {
+    let seo = SeoMeta::default();
+    
+    // Check if referer is from the same site
+    let can_go_back = request
+        .headers()
+        .get(header::REFERER)
+        .and_then(|referer| referer.to_str().ok())
+        .map(|referer| {
+            // Check if referer is from the same site
+            // Check for production domain (runpiper.ai) or localhost for development
+            referer.starts_with(seo.base_url)
+                || referer.starts_with("http://localhost")
+                || referer.starts_with("https://localhost")
+                || referer.contains("127.0.0.1")
+                // Also check if it contains the same host (for different protocols/ports)
+                || (referer.contains("runpiper.ai") && seo.base_url.contains("runpiper.ai"))
+        })
+        .unwrap_or(false);
+    
+    let template = NotFoundTemplate::new(can_go_back);
+    
+    (StatusCode::NOT_FOUND, template).into_response()
+}
+
 // Non-async main that runs before tokio
 fn main() {
     // Write to file immediately to prove binary is running
@@ -360,6 +424,8 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
         .route("/docs/:folder/:slug", get(docs_page))
         // Serve static files with aggressive caching
         .nest_service("/static", ServeDir::new("static"))
+        // 404 handler for all unmatched routes
+        .fallback(not_found_handler)
         .layer(middleware);
     
     let addr = format!("0.0.0.0:{}", port);

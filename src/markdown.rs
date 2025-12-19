@@ -15,6 +15,7 @@ pub struct Frontmatter {
     pub date: Option<String>,
     pub author: Option<String>,
     pub tags: Option<Vec<String>>,
+    pub order: Option<u32>,
 }
 
 pub struct MarkdownContent {
@@ -31,12 +32,20 @@ pub enum MarkdownError {
 
 impl IntoResponse for MarkdownError {
     fn into_response(self) -> Response {
-        let (status, message) = match self {
-            MarkdownError::NotFound => (StatusCode::NOT_FOUND, "Page not found"),
-            MarkdownError::InvalidPath => (StatusCode::BAD_REQUEST, "Invalid path"),
-            MarkdownError::ParseError(ref e) => (StatusCode::INTERNAL_SERVER_ERROR, e.as_str()),
-        };
-        (status, Html(format!("<h1>{}</h1>", message))).into_response()
+        match self {
+            MarkdownError::NotFound => {
+                // Use the same 404 page as the fallback handler
+                // Client-side JS will handle referer checking
+                let html = include_str!("../templates/404-standalone.html");
+                (StatusCode::NOT_FOUND, Html(html.to_string())).into_response()
+            }
+            MarkdownError::InvalidPath => {
+                (StatusCode::BAD_REQUEST, Html("<h1>Invalid path</h1>".to_string())).into_response()
+            }
+            MarkdownError::ParseError(ref e) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, Html(format!("<h1>Error: {}</h1>", e))).into_response()
+            }
+        }
     }
 }
 
@@ -120,6 +129,7 @@ pub struct DocPageSummary {
     pub slug: String,
     pub title: String,
     pub is_index: bool,
+    pub order: Option<u32>,
 }
 
 #[derive(Debug, Clone)]
@@ -127,6 +137,7 @@ pub struct DocFolder {
     pub name: String,
     pub display_name: String,
     pub pages: Vec<DocPageSummary>,
+    pub order: Option<u32>,
 }
 
 pub fn list_all_docs() -> Result<Vec<DocFolder>, MarkdownError> {
@@ -187,6 +198,7 @@ pub fn list_all_docs() -> Result<Vec<DocFolder>, MarkdownError> {
                                     slug,
                                     title: frontmatter.title,
                                     is_index,
+                                    order: frontmatter.order,
                                 });
                         }
                     }
@@ -217,6 +229,7 @@ pub fn list_all_docs() -> Result<Vec<DocFolder>, MarkdownError> {
                             slug,
                             title: frontmatter.title,
                             is_index,
+                            order: frontmatter.order,
                         });
                 }
             }
@@ -227,14 +240,24 @@ pub fn list_all_docs() -> Result<Vec<DocFolder>, MarkdownError> {
     let mut result: Vec<DocFolder> = folders
         .into_iter()
         .map(|(name, mut pages)| {
-            // Sort pages: index first, then alphabetically
+            // Get folder order from index page if it exists
+            let folder_order = pages.iter()
+                .find(|p| p.is_index)
+                .and_then(|p| p.order);
+            
+            // Sort pages: index first, then by order, then alphabetically
             pages.sort_by(|a, b| {
                 if a.is_index {
                     std::cmp::Ordering::Less
                 } else if b.is_index {
                     std::cmp::Ordering::Greater
                 } else {
-                    a.title.cmp(&b.title)
+                    match (a.order, b.order) {
+                        (Some(order_a), Some(order_b)) => order_a.cmp(&order_b),
+                        (Some(_), None) => std::cmp::Ordering::Less,
+                        (None, Some(_)) => std::cmp::Ordering::Greater,
+                        (None, None) => a.title.cmp(&b.title),
+                    }
                 }
             });
             
@@ -257,18 +280,24 @@ pub fn list_all_docs() -> Result<Vec<DocFolder>, MarkdownError> {
                 name,
                 display_name,
                 pages,
+                order: folder_order,
             }
         })
         .collect();
     
-    // Sort folders alphabetically, but put _root first
+    // Sort folders: _root first, then by order, then alphabetically
     result.sort_by(|a, b| {
         if a.name == "_root" {
             std::cmp::Ordering::Less
         } else if b.name == "_root" {
             std::cmp::Ordering::Greater
         } else {
-            a.name.cmp(&b.name)
+            match (a.order, b.order) {
+                (Some(order_a), Some(order_b)) => order_a.cmp(&order_b),
+                (Some(_), None) => std::cmp::Ordering::Less,
+                (None, Some(_)) => std::cmp::Ordering::Greater,
+                (None, None) => a.name.cmp(&b.name),
+            }
         }
     });
     
