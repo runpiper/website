@@ -85,6 +85,20 @@
 
     <!-- Main content -->
     <div class="docs-main">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+                {% for breadcrumb in breadcrumbs %}
+                <li>
+                    {% if loop.last || breadcrumb.url == "" %}
+                    <span {% if loop.last %}aria-current="page"{% endif %}>{{ breadcrumb.label }}</span>
+                    {% else %}
+                    <a href="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ol>
+        </nav>
+        
         <article class="doc-page">
             <div class="doc-header">
                 <h1>{{ title }}</h1>

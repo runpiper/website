@@ -74,6 +74,13 @@ async fn health() -> Json<HealthResponse> {
     Json(HealthResponse { status: "ok" })
 }
 
+// Breadcrumb item
+#[derive(Clone)]
+struct BreadcrumbItem {
+    label: String,
+    url: String,
+}
+
 // Blog template
 #[derive(Template)]
 #[template(path = "blog.html")]
@@ -94,12 +101,27 @@ struct BlogTemplate {
     author: Option<String>,
     tags: Option<Vec<String>>,
     content: String,
+    
+    // Breadcrumbs
+    breadcrumbs: Vec<BreadcrumbItem>,
 }
 
 impl BlogTemplate {
     fn new(slug: &str, title: String, description: Option<String>, date: Option<String>, author: Option<String>, tags: Option<Vec<String>>, content: String) -> Self {
         let seo = SeoMeta::default();
         let meta_desc = description.unwrap_or_else(|| format!("{} - {}", title, seo.site_name));
+        
+        // Build breadcrumbs: Blog > [Post Title]
+        let breadcrumbs = vec![
+            BreadcrumbItem {
+                label: "Blog".to_string(),
+                url: "/blog".to_string(),
+            },
+            BreadcrumbItem {
+                label: title.clone(),
+                url: format!("/blog/{}", slug),
+            },
+        ];
         
         Self {
             site_name: seo.site_name,
@@ -115,6 +137,7 @@ impl BlogTemplate {
             author,
             tags,
             content,
+            breadcrumbs,
         }
     }
 }
@@ -142,6 +165,9 @@ struct DocsTemplate {
     docs_nav: Vec<DocFolder>,
     current_folder: String,
     current_slug: String,
+    
+    // Breadcrumbs
+    breadcrumbs: Vec<BreadcrumbItem>,
 }
 
 impl DocsTemplate {
@@ -156,6 +182,53 @@ impl DocsTemplate {
         } else {
             format!("{}/docs/{}/{}", seo.base_url, folder, slug)
         };
+        
+        // Build breadcrumbs: Docs > [Folder Display Name] > [Page Title]
+        let mut breadcrumbs = vec![
+            BreadcrumbItem {
+                label: "Docs".to_string(),
+                // For root index page, this is self-referential, so use empty URL
+                url: if slug == "docs" { String::new() } else { "/docs".to_string() },
+            },
+        ];
+        
+        // Add folder breadcrumb if not root
+        if !folder.is_empty() {
+            // Find folder display name from docs_nav
+            let folder_display_name = docs_nav
+                .iter()
+                .find(|f| f.name == folder)
+                .map(|f| f.display_name.clone())
+                .unwrap_or_else(|| {
+                    // Fallback: convert folder name to display name
+                    folder
+                        .replace('-', " ")
+                        .replace('_', " ")
+                        .split_whitespace()
+                        .map(|word| {
+                            let mut chars = word.chars();
+                            match chars.next() {
+                                None => String::new(),
+                                Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+                            }
+                        })
+                        .collect::<Vec<_>>()
+                        .join(" ")
+                });
+            
+            breadcrumbs.push(BreadcrumbItem {
+                label: folder_display_name,
+                // For folder index page, this is self-referential, so use empty URL
+                url: if slug == "index" { String::new() } else { format!("/docs/{}", folder) },
+            });
+        }
+        
+        // Add current page title
+        breadcrumbs.push(BreadcrumbItem {
+            label: title.clone(),
+            // Last item is always self-referential, so use empty URL
+            url: String::new(),
+        });
         
         Self {
             site_name: seo.site_name,
@@ -172,6 +245,7 @@ impl DocsTemplate {
             docs_nav,
             current_folder: folder.to_string(),
             current_slug: slug.to_string(),
+            breadcrumbs,
         }
     }
 }

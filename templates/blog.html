@@ -6,6 +6,20 @@
 
 {% block content %}
 <div class="container content-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+            {% for breadcrumb in breadcrumbs %}
+            <li>
+                {% if loop.last %}
+                <span aria-current="page">{{ breadcrumb.label }}</span>
+                {% else %}
+                <a href="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </nav>
+    
     <article class="blog-post">
         <div class="post-header">
             <h1>{{ title }}</h1>
